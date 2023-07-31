@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Expense Tracker</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+    <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
+</head>
+<body>
+    <form>
+        <label class="form-label" for="amount">Spend</label>
+        <input type="number" class="form-control" id="amount" name="amount" min="5" max="10**7" required><br>
+        <label class="form-label" for="desc">Descrption</label>
+        <input type="text" class="form-control" id="desc" name="description" required><br>
+        <label class="form-label" for="option">Select one</label>
+        <select class="form-select" id="option" name="selected">
+            <option value="">--from the list--</option>
+            <option value="Movie">Movie</option>
+            <option value="Exhibition">Exhibition</option>
+            <option value="Shoes">Shoes</option>
+            <option value="Concert">Concert</option>
+            <option value="Gift">Gift</option>
+        </select><br>
+        <input type="button" class="form-control btn btn-dark btn-sm" value="Add expense"><br>
+    </form>
+    <div><ul class ="list-group" id="expenses"></ul></div>
+
+    <script>
+        let ul = document.querySelector('#expenses');
+        let btn = document.querySelector('.btn-sm');
+        let keys = Object.keys(localStorage);
+        btn.addEventListener('click', (e) => {
+            e.preventDefault();
+            let spend = document.getElementById('amount').value;
+            let desc = document.getElementById('desc').value;
+            let option = document.getElementById('option').value;
+            let obj = {
+                amount: spend,
+                description: desc,
+                opt: option
+            };
+            let json = JSON.stringify(obj);
+            let val = `${spend} - ${desc} - ${option}`;
+            let li = document.createElement('li');
+            li.className = 'list-group-item';
+            let del = document.createElement('button');
+            del.className = 'btn btn-danger float-right';
+            del.textContent = 'Delete expense';
+            let edit =  document.createElement('button');
+            edit.textContent = "Edit expense";
+            edit.className = 'btn btn-success float-right';
+            li.appendChild(document.createTextNode(spend));
+            li.appendChild(document.createTextNode(' - '));
+            li.appendChild(document.createTextNode(desc));
+            li.appendChild(document.createTextNode(' - '));
+            li.appendChild(document.createTextNode(option));
+            li.insertBefore(del,li.nextElementSibling);
+            li.insertBefore(edit,li.nextElementSibling);
+            ul.appendChild(li);
+            localStorage.setItem(val,val);
+            del.addEventListener('click',(e)=>{
+                localStorage.removeItem(val);
+                e.target.parentElement.remove();
+            })
+            edit.addEventListener('click',(e)=>{
+                let backup1 = spend;
+                let backup2 = desc;
+                let backup3 = option;
+                localStorage.removeItem(val);
+                e.target.parentElement.remove();
+                document.getElementById('amount').value = backup1;
+                document.getElementById('desc').value = backup2;
+                document.getElementById('option').value = backup3;
+            })
+
+        })
+        if(keys.length){
+
+            keys.forEach((k) => {
+                let li = document.createElement('li');
+                li.appendChild(document.createTextNode(localStorage[k]));
+                li.className = 'list-group-item';
+                let del = document.createElement('button');
+                del.className = 'btn btn-danger float-right';
+                del.textContent = 'Delete expense';
+                let edit =  document.createElement('button');
+                edit.textContent = "Edit expense";
+                edit.className = 'btn btn-success float-right';
+                li.appendChild(del);
+                li.appendChild(edit);
+                ul.appendChild(li);
+            });
+
+            ul.addEventListener('click',(e)=>{
+                if(e.target.textContent.indexOf('Delete') > -1){
+                    localStorage.removeItem(e.target.parentElement.firstChild.textContent);
+                    e.target.parentElement.remove();
+                }
+                if(e.target.textContent.indexOf('Edit') > -1){
+                    let eve = e.target.parentElement.firstChild.textContent;
+                    localStorage.removeItem(e.target.parentElement.firstChild.textContent);
+                    e.target.parentElement.remove();
+                    let str = '';
+                    let count = 0;
+                    for(let a=0;a<eve.length;a++){
+                        if(eve.charCodeAt(a) > 47 && eve.charCodeAt(a) <58 ||
+                           eve.charCodeAt(a) > 64 && eve.charCodeAt(a) <91 ||
+                           eve.charCodeAt(a) > 96 && eve.charCodeAt(a) <123){
+
+                            str += eve[a];
+                        }
+                        else {
+                            if(str && count < 1){
+                                document.getElementById('amount').value = str;
+                                str = '';
+                            }
+                            if(str && count === 3){                                
+                                document.getElementById('desc').value = str;
+                                str = '';
+                            }
+                            count++;
+                        }
+                    }
+                    if(str){
+                      document.getElementById('option').value = str;
+                    }
+                }
+            })
+        }
+    </script>
+</body>
+</html>
