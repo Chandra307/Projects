@@ -1,11 +1,11 @@
 {
-  "name": "expense-tracker",
+  "name": "socialMedia",
   "version": "1.0.0",
   "description": "expense-tracker-app",
-  "main": "./expenseServer/app.js",
+  "main": "./socialServer/app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon ./expenseServer/app.js"
+    "start": "nodemon ./socialServer/app.js"
   },
   "repository": {
     "type": "git",

@@ -1,0 +1,21 @@
+body {
+    font-family: sans-serif;
+}
+label {
+    display: block;
+}
+h2,h3 {
+    text-align: center;
+}
+ul {
+    list-style-type: none;
+    align-items: center;
+    /* margin: auto; */
+}
+li {
+    margin-bottom: 6px;
+}
+div .comment {
+    /* margin-top: 3px; */
+    padding-top: 3px;
+}

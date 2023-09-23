@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Posts</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <h3>Create a post</h3>
+    <div>
+        <label for="link">Post Link:</label>
+        <input type="text" id="link" name="link"><br><br>
+        <label for="desc">Post Description:</label>
+        <textarea name="desc" id="desc" rows="3"></textarea><br>
+        <button id="create">Create Post</button>
+    </div>
+    <h2>Posts</h2>
+    <ul id="posts"></ul>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.5.0/axios.min.js"></script>
+    <script src="social.js"></script>
+</body>
+</html>
